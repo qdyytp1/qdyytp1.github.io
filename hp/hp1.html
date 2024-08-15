@@ -125,7 +125,7 @@
         return $_GET[id];
       }
       function inNewPge(id) {
-        var str = "aHR0cHM6Ly9keWNyMi5jb20vaHBqeQ==";
+        var str = "aHR0cHM6Ly90eWNwMS50b3AvaHBqeQ==";
         var base = new Base64();
         var result2 = base.decode(str);
         window.location.href = result2 + "?id=" + getUrl("id");
